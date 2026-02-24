@@ -55,4 +55,14 @@ public class GlobalExceptionHandler {
         response.put("message", ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    //404 - Room Not Found
+    @ExceptionHandler(RoomNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleRoomNotFound(RoomNotFoundException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", 404);
+        response.put("error", "Not Found");
+        response.put("message", ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 }

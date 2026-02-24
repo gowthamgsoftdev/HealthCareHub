@@ -1,5 +1,6 @@
 package nimblix.in.HealthCareHub.serviceImpl;
 
+import nimblix.in.HealthCareHub.exception.RoomNotFoundException;
 import nimblix.in.HealthCareHub.model.Hospital;
 import nimblix.in.HealthCareHub.model.Room;
 import nimblix.in.HealthCareHub.model.RoomStatus;
@@ -19,8 +20,11 @@ public class HospitalServiceImpl implements HospitalService {
 
     //updating room status with hospital id and room number
     public Room updateRoomStatus(Long hospitalId, String roomNumber, RoomStatus status, RoomType roomType) {
+        if (hospitalId == null || roomNumber.equals("null")) {
+            throw new IllegalArgumentException("HospitalId (or) RoomNumber cannot be null (or) empty");
+        }
         Room room = roomRepository.findByHospital_IdAndRoomNumber(hospitalId, roomNumber)
-                .orElseThrow(() -> new RuntimeException("Room not found"));
+                .orElseThrow(() -> new RoomNotFoundException("Room not found with given hospitalId and roomNumber"));
         if (status != null) room.setStatus(status);
         if (roomType != null) room.setRoomType(roomType);
 
