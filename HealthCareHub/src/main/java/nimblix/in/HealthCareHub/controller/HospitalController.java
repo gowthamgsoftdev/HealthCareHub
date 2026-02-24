@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/hospitals")
+@RequestMapping("/api/hospital")
 public class HospitalController {
-
     @Autowired
     private HospitalServiceImpl hospitalServiceImpl;
 
