@@ -66,4 +66,25 @@ public class GlobalExceptionHandler {
         response.put("message", ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
+
+    // 400 - Invalid room status
+    @ExceptionHandler(InvalidRoomStatusException.class)
+    public ResponseEntity<Map<String, Object>> handleInvalidRoomStatus(InvalidRoomStatusException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.BAD_REQUEST.value());
+        response.put("error", "Bad Request");
+        response.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    // 404 - Hospital not found
+    @ExceptionHandler(HospitalNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleHospitalNotFound(HospitalNotFoundException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.NOT_FOUND.value());
+        response.put("error", "Not Found");
+        response.put("message", ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 }

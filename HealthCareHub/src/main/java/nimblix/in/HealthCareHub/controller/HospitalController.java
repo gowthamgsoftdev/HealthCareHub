@@ -2,11 +2,11 @@ package nimblix.in.HealthCareHub.controller;
 
 import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
+import nimblix.in.HealthCareHub.request.UpdateRoomStatusRequest;
+import nimblix.in.HealthCareHub.response.UpdateRoomStatusResponse;
 import nimblix.in.HealthCareHub.service.HospitalService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/hospital")
@@ -19,5 +19,10 @@ public class HospitalController {
     public String registerHospital(@RequestBody HospitalRegistrationRequest request) {
         return hospitalService.registerHospital(request);
     }
-    
+    // Update Room Status
+    @PatchMapping("/room/status")
+    public ResponseEntity<UpdateRoomStatusResponse> updateRoomStatus(@RequestBody UpdateRoomStatusRequest request) {
+        UpdateRoomStatusResponse response = hospitalService.updateRoomStatus(request);
+        return ResponseEntity.ok(response);
+    }
 }

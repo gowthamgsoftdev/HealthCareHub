@@ -33,6 +33,13 @@ public class Hospital {
 
     private Integer totalBeds;
 
+    @ElementCollection
+    @CollectionTable(
+            name = "hospital_rooms",
+            joinColumns = @JoinColumn(name = "hospital_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"hospital_id", "room_number"})
+    )
+    private List<RoomData> rooms;
 
     @Column(name = "created_time", updatable = false)
     private String createdTime;
