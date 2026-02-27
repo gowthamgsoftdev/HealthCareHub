@@ -47,6 +47,7 @@ AND (
         (:startTime < d.endTime AND :endTime > d.startTime)
 )
 """)
+    //overlapping
     boolean existsOverlappingSlotForUpdate(
             @Param("doctorId") Long doctorId,
             @Param("availableDate") String availableDate,
