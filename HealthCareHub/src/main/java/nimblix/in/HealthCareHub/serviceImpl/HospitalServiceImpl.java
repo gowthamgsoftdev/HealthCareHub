@@ -1,33 +1,38 @@
 package nimblix.in.HealthCareHub.serviceImpl;
 
-import nimblix.in.HealthCareHub.exception.RoomNotFoundException;
+import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.model.Hospital;
-import nimblix.in.HealthCareHub.model.Room;
-import nimblix.in.HealthCareHub.model.RoomStatus;
-import nimblix.in.HealthCareHub.model.RoomType;
 import nimblix.in.HealthCareHub.repository.HospitalRepository;
-import nimblix.in.HealthCareHub.repository.RoomRepository;
+import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
 import nimblix.in.HealthCareHub.service.HospitalService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor
 @Service
 public class HospitalServiceImpl implements HospitalService {
 
-    @Autowired
-    private RoomRepository roomRepository;
+    private final HospitalRepository hospitalRepository;
 
+    @Override
+    public String registerHospital(HospitalRegistrationRequest request) {
 
-    //updating room status with hospital id and room number
-    public Room updateRoomStatus(Long hospitalId, String roomNumber, RoomStatus status, RoomType roomType) {
-        if (hospitalId == null || roomNumber.equals("null")) {
-            throw new IllegalArgumentException("HospitalId (or) RoomNumber cannot be null (or) empty");
+        // Check if hospital already exists
+        if (hospitalRepository.findByName(request.getName()).isPresent()) {
+            return "Hospital already exists";
         }
-        Room room = roomRepository.findByHospital_IdAndRoomNumber(hospitalId, roomNumber)
-                .orElseThrow(() -> new RoomNotFoundException("Room not found with given hospitalId and roomNumber"));
-        if (status != null) room.setStatus(status);
-        if (roomType != null) room.setRoomType(roomType);
 
-        return roomRepository.save(room);
+        Hospital hospital = Hospital.builder()
+                .name(request.getName())
+                .address(request.getAddress())
+                .city(request.getCity())
+                .state(request.getState())
+                .phone(request.getPhone())
+                .email(request.getEmail())
+                .totalBeds(request.getTotalBeds())
+                .build();
+
+        hospitalRepository.save(hospital);
+
+        return "Hospital Registered Successfully";
     }
 }

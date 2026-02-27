@@ -1,32 +1,23 @@
 package nimblix.in.HealthCareHub.controller;
 
-import nimblix.in.HealthCareHub.model.Room;
-import nimblix.in.HealthCareHub.request.UpdateRoomStatusRequest;
-import nimblix.in.HealthCareHub.serviceImpl.HospitalServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-
+import lombok.RequiredArgsConstructor;
+import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
+import nimblix.in.HealthCareHub.service.HospitalService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/hospital")
+@RequiredArgsConstructor
 public class HospitalController {
-    @Autowired
-    private HospitalServiceImpl hospitalServiceImpl;
 
-    // UPDATE ROOM STATUS
-    @PatchMapping("/{hospitalId}/rooms/{roomNumber}/status")
-    public ResponseEntity<Room> updateRoomStatus(@PathVariable Long hospitalId, @PathVariable String roomNumber, @RequestBody UpdateRoomStatusRequest request) {
-        Room updatedRoom = hospitalServiceImpl.updateRoomStatus(
-                hospitalId,
-                roomNumber,
-                request.getStatus(),
-                request.getRoomType()
-        );
+    private final HospitalService hospitalService;
 
-        return ResponseEntity.ok(updatedRoom);
+    @PostMapping("/register")
+    public String registerHospital(@RequestBody HospitalRegistrationRequest request) {
+        return hospitalService.registerHospital(request);
     }
-
-
+    
 }
