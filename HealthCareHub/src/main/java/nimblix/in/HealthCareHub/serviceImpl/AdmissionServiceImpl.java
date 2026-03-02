@@ -43,8 +43,7 @@ public class AdmissionServiceImpl implements AdmissionService {
         boolean isPatientAlreadyAdmitted =
                 admissionRepository.existsByPatientIdAndStatus(request.getPatientId(), "ADMITTED");
 
-        System.out.println("Exists check result: " + isPatientAlreadyAdmitted);
-
+        
         if (isPatientAlreadyAdmitted) {
             throw new IllegalArgumentException(
                     "Patient is already admitted. Cannot admit the same patient twice.");
